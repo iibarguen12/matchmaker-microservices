@@ -95,7 +95,7 @@ class ProductControllerTest {
                         .content(objectMapper.writeValueAsString(newProduct))
         );
 
-        // then - should return deleted (no content) status
+        // then - should return  Ok status and the modified object
         response.andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(20)))
