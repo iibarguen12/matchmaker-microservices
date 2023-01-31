@@ -38,6 +38,14 @@ So the simple storage model for the H2 will be like
 
 ![img.png](img.png)
 
+In the other hand, to decompose the Product, Rule, and Condition tables, a separate collections in MongoDB can be created to store different data types. For example:
+
+![img_2.png](img_2.png)
+
+In this design, the attributes field is an array of objects, where each object has a key field that defines the attribute name, and a value field that holds the value of the attribute. This allows to store any number of attributes for a product, without the need to change the schema for each new attribute.
+
+In this way, each collection will contain documents of the same type and can be optimized for the type of data stored. The ruleIds and conditionIds fields in the Condition and Rule collections are arrays of references to the corresponding _id fields in the Product and Condition collections, respectively. This allows to manage relationships between collections in a way that is similar to relationships between tables in a relational database.
+
 ## Consuming
 To consume the service, the Postman JSON collection "Context Lab.postman_collection.json" can be used, which has the different requests for:
 * Authentication
