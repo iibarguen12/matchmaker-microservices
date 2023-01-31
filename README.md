@@ -37,3 +37,21 @@ For the sake of simplicity, this project uses H2 as a database embedded in the P
 So the simple storage model for the H2 will be like
 
 ![img.png](img.png)
+
+## Consuming
+To consume the service, the Postman JSON collection "Context Lab.postman_collection.json" can be used, which has the different requests for:
+* Authentication
+* Products CRUD
+* Rules CRUD 
+* Score calculation
+
+As every service and request is secured but the login authentication, you should start by requesting the Get Token ("http://localhost:8080/api/v1/auth/login"") with the test credentials:
+
+
+{
+"username": "test",
+"password" : "test"
+}
+
+The rest of the JSON and request endpoints can be found in the Postman collection.
+
