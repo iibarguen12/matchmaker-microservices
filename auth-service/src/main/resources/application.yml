@@ -1,0 +1,32 @@
+logging.level.root: INFO
+
+server:
+  port: 8084
+
+spring:
+  application:
+    name: auth-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    instance:
+      leaseRenewalIntervalInSeconds: 5
+      lease-expiration-duration-in-seconds: 5
+    preferIpAddress: true
+    registryFetchIntervalSeconds: 5
+    fetchRegistry: true
+
+jwt:
+  secret: secret
+
+app:
+  user: test
+  pass: test
+  jwt:
+    message: 'Login Successful'
+  controller:
+    exception:
+      message1: 'Username or Password Empty'
+      message2: 'Username or Password Invalid'
