@@ -1,0 +1,24 @@
+logging.level.root: INFO
+
+server:
+  port: 8083
+
+spring:
+  application:
+    name: scoring-service
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+services:
+  products:
+    name: products-service
+    url: http://localhost:8081/api/v1
+  rules:
+    name: rules-service
+    url: http://localhost:8082/api/v1

@@ -1,4 +1,4 @@
-package com.contextlab.rulesservice.serializers;
+package com.contextlab.rulesservice.util;
 
 import java.io.IOException;
 import java.sql.Clob;

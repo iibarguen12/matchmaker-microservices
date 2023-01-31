@@ -1,42 +1,27 @@
-package com.contextlab.rulesservice.entity;
+package com.contextlab.scoringservice.model;
 
-import com.contextlab.rulesservice.util.ClobDeserializer;
-import com.contextlab.rulesservice.util.ClobSerializer;
-import com.fasterxml.jackson.annotation.*;
+import com.contextlab.scoringservice.util.ClobDeserializer;
+import com.contextlab.scoringservice.util.ClobSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
-import javax.persistence.*;
 import java.sql.Clob;
 import java.util.Set;
 
-@Entity
-@Table(name = "conditions")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(exclude = "rules")
 public class Condition{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String attribute;
-
-    @Column(nullable = false)
     @JsonSerialize(using = ClobSerializer.class)
     @JsonDeserialize(using = ClobDeserializer.class)
     private Clob value;
-
-    @Column(nullable = false)
     private String operator;
-
     @JsonIgnore
-    @ManyToMany(mappedBy = "conditions",fetch = FetchType.LAZY)
-    @JsonIgnoreProperties ("conditions")
     private Set<Rule> rules;
 }
