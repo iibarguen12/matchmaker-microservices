@@ -18,7 +18,16 @@ feign:
 services:
   products:
     name: products-service
-    url: http://localhost:8081/api/v1
   rules:
     name: rules-service
-    url: http://localhost:8082/api/v1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    instance:
+      leaseRenewalIntervalInSeconds: 5
+      lease-expiration-duration-in-seconds: 5
+    preferIpAddress: true
+    registryFetchIntervalSeconds: 5
+    fetchRegistry: true

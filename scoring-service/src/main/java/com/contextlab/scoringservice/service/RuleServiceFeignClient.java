@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name="${services.rules.name}", url="${services.rules.url}")
+@FeignClient(name="${services.rules.name}")
 public interface RuleServiceFeignClient {
 
-    @GetMapping("/rules")
-    public ResponseEntity<List<Rule>> getAllRules();
+    @GetMapping("api/v1/rules")
+    ResponseEntity<List<Rule>> getAllRules();
 
-    @GetMapping("/rules/{id}")
-    public ResponseEntity<Rule> getRuleById(@PathVariable("id") long id);
+    @GetMapping("api/v1/rules/{id}")
+    ResponseEntity<Rule> getRuleById(@PathVariable("id") long id);
 }

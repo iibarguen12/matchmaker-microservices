@@ -6,12 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@FeignClient(name="${services.products.name}", url="${services.products.url}")
+@FeignClient(name="${services.products.name}")
 public interface ProductServiceFeignClient {
-    @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts();
+    @GetMapping("api/v1/products")
+    ResponseEntity<List<Product>> getAllProducts();
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") long id);
+    @GetMapping("api/v1/products/{id}")
+    ResponseEntity<Product> getProductById(@PathVariable("id") long id);
 
 }
