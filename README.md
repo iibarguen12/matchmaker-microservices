@@ -4,7 +4,11 @@
 ## Description
 This system is split into microservices, allowing for better scalability, fault isolation, and ease of development. Each microservice can be deployed and scaled independently and can quickly add new features and fix bugs without affecting the entire system.
 
-The services are as follows:
+The system design is as follows:
+
+![img_1.png](img_1.png)
+
+And the description of the services are as follows:
 
 * ###### Auth Service: 
     This service is a centralized authentication and authorization server that will use **JWT (JSON Web Token)** to create and validate the requests.
@@ -29,3 +33,7 @@ As mentioned before, the communication between the services is achieved using **
 
 ## Storage
 For the sake of simplicity, this project uses H2 as a database embedded in the Products service and the Rules service, and handles the multiple data type using a CLOB column in the database and a special serializer and deserializer to transform to the respective type. However, in a real-life scenario where different data types is expected and a high volume of data needs to be managed, with more reads than writes with the need of easy scalability, I would recommend using a NoSQL database like a **MongoDB**, which is a document database where is not require data to fit into a rigid structure of relational rows and columns, storing all related data together within a single document. Additionally, it would be beneficial to partition the Products database into categories and the Rules database by scores, using a **Shared Database Pattern**.
+
+So the simple storage model for the H2 will be like
+
+![img.png](img.png)
