@@ -1,6 +1,7 @@
 package com.contextlab.scoringservice.controller;
 
 import com.contextlab.scoringservice.dto.RuleProductRequestDto;
+import com.contextlab.scoringservice.dto.ThresholdResultDto;
 import com.contextlab.scoringservice.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -11,10 +12,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Array;
 import java.util.Arrays;
@@ -87,5 +92,22 @@ class ScoringControllerTest {
         response.andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(5)));
+    }
+
+    @Test
+    @Order(4)
+    void getTotalsByThreshold()  throws Exception {
+        // given - the information from the product-service and the rule-service using OpenFeign
+
+        // when -  calculating the total and average price based on the threshold 90
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/scoring/total?threshold=90")
+        );
+
+        // then - should return ok status and 5 records, and the first totalPrice have to be 93.97
+        response.andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].totalPrice",Matchers.is(93.97)));
     }
 }

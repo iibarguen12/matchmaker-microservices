@@ -3,10 +3,12 @@ package com.contextlab.scoringservice.service;
 import com.contextlab.scoringservice.dto.ProductDto;
 import com.contextlab.scoringservice.dto.RuleProductDto;
 import com.contextlab.scoringservice.dto.RuleProductRequestDto;
+import com.contextlab.scoringservice.dto.ThresholdResultDto;
 import com.contextlab.scoringservice.model.Condition;
 import com.contextlab.scoringservice.model.Product;
 import com.contextlab.scoringservice.model.Rule;
 import lombok.AllArgsConstructor;
+import org.apache.commons.math3.util.Precision;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +61,33 @@ public class ScoringServiceImpl implements ScoringService{
                 .map(id -> productServiceFeignClient.getProductById(id).getBody())
                 .collect(Collectors.toList());
         return scoreProducts(products, rules);
+    }
+
+    @Override
+    public List<ThresholdResultDto> getTotalsByThreshold(Double threshold){
+        List<RuleProductDto> ruleProducts = scoreProducts(
+                productServiceFeignClient.getAllProducts().getBody(),
+                ruleServiceFeignClient.getAllRules().getBody());
+
+        return ruleProducts.stream()
+                .map(ruleProductDto -> {
+                    long count = ruleProductDto.getRuleProducts().stream()
+                            .filter(productDto -> productDto.getScore() >= threshold)
+                            .count();
+                    double totalPrice = ruleProductDto.getRuleProducts().stream()
+                            .filter(productDto -> productDto.getScore() >= threshold)
+                            .mapToDouble(ProductDto::getCost)
+                            .sum();
+                    double averagePrice = count > 0 ? totalPrice / count : 0.0;
+
+                    return new ThresholdResultDto(
+                            ruleProductDto.getRuleId(),
+                            count,
+                            Precision.round(totalPrice, 2),
+                            Precision.round(averagePrice,2));
+                })
+                .filter(rp -> rp.getCount() > 0)
+                .collect(Collectors.toList());
     }
 
     public List<RuleProductDto> scoreProducts(List<Product> products, List<Rule> rules) {
