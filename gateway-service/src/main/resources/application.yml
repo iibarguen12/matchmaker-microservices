@@ -13,18 +13,38 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/api/v1/auth/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: hystrixAuth
+                fallbackUri: forward:/auth-service/fallback
         - id: productsService
           uri: lb://products-service
           predicates:
             - Path=/api/v1/products/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: hystrixProducts
+                fallbackUri: forward:/products-service/fallback
         - id: rulesService
           uri: lb://rules-service
           predicates:
             - Path=/api/v1/conditions/**, /api/v1/rules/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: hystrixRules
+                fallbackUri: forward:/rules-service/fallback
         - id: scoringService
           uri: lb://scoring-service
           predicates:
             - Path=/api/v1/scoring/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: hystrixScoring
+                fallbackUri: forward:/scoring-service/fallback
 
 
 eureka:
