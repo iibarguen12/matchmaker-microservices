@@ -8,6 +8,8 @@ spring:
     name: scoring-service
 
 feign:
+  circuitbreaker:
+    enabled: true
   client:
     config:
       default:

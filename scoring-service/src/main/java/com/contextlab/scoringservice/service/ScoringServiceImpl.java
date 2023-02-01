@@ -110,8 +110,9 @@ public class ScoringServiceImpl implements ScoringService{
     }
 
     public double calculateProductScore(Product product, Rule rule) {
-        if(product == null || rule == null)
+        if (product == null || rule == null || product.getId() == null || rule.getConditions() == null) {
             return 0;
+        }
         long matchingConditions = rule.getConditions().stream()
                 .filter(condition -> matchesCondition(product, condition))
                 .count();
